@@ -2,11 +2,7 @@ import { Component } from "react";
 import { withRouter } from "react-router";
 
 class Details extends Component {
-  //class component
-  constructor() {
-    super();
-    this.state = { loading: true };
-  }
+  state = { loading: true };
 
   async componentDidMount() {
     //lifecyclemethod
