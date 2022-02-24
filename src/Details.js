@@ -1,6 +1,7 @@
 import { Component } from "react";
-import { withRouter } from "react-router";
+import { withRouter } from "react-router-dom";
 import Carousel from "./Carousel";
+import ErrorBoundary from "./ErrorBoundary";
 
 class Details extends Component {
   state = { loading: true };
@@ -19,23 +20,41 @@ class Details extends Component {
         },
         json.pets[0] //parse json data instead of every data added sepretly
       )
-    ); // when adding in curly brackets it does not override other values(if they are present)
+    );
   }
+
+  // when adding in curly brackets it does not override other values(if they are present)
 
   render() {
     if (this.state.loading) {
-      return <h2> loading ...</h2>;
+      return <h2>loading … </h2>;
     }
+
     const { animal, breed, city, state, description, name, images } =
       this.state;
+
+    // throw new Error('it is broken') // to test error
+
     return (
       <div className="details">
-        <Carousel images={images} />;<h1>{name}</h1>
-        <h2>{`${animal} — ${breed} — ${city}, ${state}`}</h2>
-        <button>Adopt {name}</button>
-        <p>{description}</p>
+        <Carousel images={images} />
+        <div>
+          <h1>{name}</h1>
+          <h2>{`${animal} — ${breed} — ${city}, ${state}`}</h2>
+          <button>Adopt {name}</button>
+          <p>{description}</p>
+        </div>
       </div>
     );
   }
 }
-export default withRouter(Details); //withRouter added to pass details
+
+const DetailsWithRouter = withRouter(Details);
+
+export default function DetailsErrorBoundary(props) {
+  return (
+    <ErrorBoundary>
+      <DetailsWithRouter {...props} />
+    </ErrorBoundary>
+  );
+}
