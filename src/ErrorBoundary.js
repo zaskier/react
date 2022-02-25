@@ -7,12 +7,9 @@ class ErrorBoundary extends Component {
     return { hasError: true, redirect: false };
   }
   componentDidCatch(error, info) {
+    //todo add monitoring here
     console.error("ErrorBoundary caught an error", error, info);
-  }
-  componentDidUpdate() {
-    if (this.state.hasError) {
-      setTimeout(() => this.setState({ redirect: true }), 5000);
-    }
+    setTimeout(() => this.setState({ redirect: true }), 5000);
   }
 
   render() {

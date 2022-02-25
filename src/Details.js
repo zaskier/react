@@ -26,14 +26,14 @@ class Details extends Component {
   // when adding in curly brackets it does not override other values(if they are present)
 
   render() {
+    // throw new Error("it is broken"); // to test error
+
     if (this.state.loading) {
       return <h2>loading … </h2>;
     }
 
     const { animal, breed, city, state, description, name, images } =
       this.state;
-
-    // throw new Error('it is broken') // to test error
 
     return (
       <div className="details">
