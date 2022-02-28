@@ -3,9 +3,10 @@ import { withRouter } from "react-router-dom";
 import Carousel from "./Carousel";
 import ErrorBoundary from "./ErrorBoundary";
 import ThemeContext from "./ThemeContext";
+import Modal from "./Modal";
 
 class Details extends Component {
-  state = { loading: true };
+  state = { loading: true, showModal: false };
 
   async componentDidMount() {
     //lifecyclemethod
@@ -26,6 +27,10 @@ class Details extends Component {
 
   // when adding in curly brackets it does not override other values(if they are present)
 
+  toogleModal = () => this.setState({ showModal: !this.state.showModal });
+
+  adopt = () => (window.location = "http://bit.ly/pet-adopt");
+
   render() {
     // throw new Error("it is broken"); // to test error
 
@@ -33,7 +38,7 @@ class Details extends Component {
       return <h2>loading … </h2>;
     }
 
-    const { animal, breed, city, state, description, name, images } =
+    const { animal, breed, city, state, description, name, images, showModal } =
       this.state;
 
     return (
@@ -44,10 +49,45 @@ class Details extends Component {
           <h2>{`${animal} — ${breed} — ${city}, ${state}`}</h2>
           <ThemeContext.Consumer>
             {([theme]) => (
-              <button style={{ backgroundColor: theme }}>Adopt {name}</button>
+              <button
+                onClick={this.toogleModal}
+                style={{ backgroundColor: theme }}
+              >
+                Adopt {name}
+              </button>
             )}
           </ThemeContext.Consumer>
           <p>{description}</p>
+
+          {showModal ? (
+            <Modal>
+              <div>
+                <h1>Would you like to adopt {name}?</h1>
+                <div className="buttons"></div>
+                <ThemeContext.Consumer>
+                  {([theme]) => (
+                    <button
+                      onClick={this.adopt}
+                      style={{ backgroundColor: theme }}
+                    >
+                      Yes
+                    </button>
+                  )}
+                </ThemeContext.Consumer>
+                <ThemeContext.Consumer>
+                  {([theme]) => (
+                    <button
+                      onClick={this.toogleModal}
+                      style={{ backgroundColor: theme }}
+                    >
+                      No
+                    </button>
+                  )}
+                </ThemeContext.Consumer>
+                {/* //todo validate how doubled themeContext can be merged */}
+              </div>
+            </Modal>
+          ) : null}
         </div>
       </div>
     );
